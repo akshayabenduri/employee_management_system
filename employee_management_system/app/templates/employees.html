@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}Employees - EMS{% endblock %}
+{% block heading %}Employees{% endblock %}
+{% block content %}
+<div class="card p-3">
+  <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+    <form method="GET" class="d-flex" style="max-width:420px;width:100%">
+      <input type="text" name="q" value="{{ search }}" class="form-control me-2" placeholder="Search by name or employee ID">
+      <button class="btn btn-primary" type="submit"><i class="bi bi-search"></i></button>
+      {% if search %}<a href="{{ url_for('main.employees') }}" class="btn btn-outline-secondary ms-2">Clear</a>{% endif %}
+    </form>
+    <a href="{{ url_for('main.add_employee') }}" class="btn btn-primary"><i class="bi bi-person-plus"></i> Add Employee</a>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table table-hover align-middle">
+      <thead>
+        <tr><th>ID</th><th>Name</th><th>Email</th><th>Phone</th><th>Department</th><th>Designation</th><th>Joined</th><th>Salary</th><th class="text-center">Actions</th></tr>
+      </thead>
+      <tbody>
+        {% for e in employees %}
+        <tr>
+          <td>{{ e.employee_id }}</td>
+          <td>{{ e.full_name }}</td>
+          <td>{{ e.email }}</td>
+          <td>{{ e.phone }}</td>
+          <td><span class="badge text-bg-primary">{{ e.department }}</span></td>
+          <td>{{ e.designation }}</td>
+          <td>{{ e.joining_date.strftime('%d %b %Y') }}</td>
+          <td>{{ "{:,.2f}".format(e.salary) }}</td>
+          <td class="text-center text-nowrap">
+            <a href="{{ url_for('main.edit_employee', emp_pk=e.id) }}" class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil"></i></a>
+            <button class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"
+              data-name="{{ e.full_name }}" data-url="{{ url_for('main.delete_employee', emp_pk=e.id) }}"><i class="bi bi-trash"></i></button>
+          </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="9" class="text-center text-muted py-4">No employees found.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <div class="text-muted small">Total records: {{ employees|length }}</div>
+</div>
+
+<!-- Delete confirmation -->
+<div class="modal fade" id="deleteModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered"><div class="modal-content">
+    <div class="modal-header"><h5 class="modal-title">Confirm Delete</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+    <div class="modal-body">Are you sure you want to delete <strong id="deleteName"></strong>? This cannot be undone.</div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+      <form id="deleteForm" method="POST"><button type="submit" class="btn btn-danger">Yes, Delete</button></form>
+    </div>
+  </div></div>
+</div>
+{% endblock %}

@@ -1,0 +1,31 @@
+:root { --brand: #1f3a5f; --brand-dark: #152a45; --accent: #2e86de; --bg: #f4f6fa; }
+body { background: var(--bg); font-family: "Segoe UI", system-ui, sans-serif; }
+
+/* Layout with sidebar */
+.sidebar { width: 240px; min-height: 100vh; background: var(--brand); position: fixed; top: 0; left: 0; padding-top: 1rem; }
+.sidebar .brand { color: #fff; font-weight: 600; font-size: 1.15rem; padding: 0.5rem 1.25rem 1.25rem; border-bottom: 1px solid rgba(255,255,255,.15); }
+.sidebar a { display: block; color: #cfd8e6; text-decoration: none; padding: .75rem 1.25rem; transition: .2s; }
+.sidebar a:hover, .sidebar a.active { background: var(--brand-dark); color: #fff; border-left: 4px solid var(--accent); }
+.content { margin-left: 240px; padding: 1.5rem 2rem; }
+.topbar { background: #fff; border-radius: .6rem; padding: .75rem 1.25rem; box-shadow: 0 1px 4px rgba(0,0,0,.06); margin-bottom: 1.5rem; }
+
+/* Cards */
+.stat-card { border: 0; border-radius: .8rem; box-shadow: 0 2px 8px rgba(0,0,0,.07); }
+.stat-card .icon { font-size: 2rem; color: var(--accent); }
+.card { border: 0; border-radius: .8rem; box-shadow: 0 2px 8px rgba(0,0,0,.07); }
+.table thead { background: var(--brand); color: #fff; }
+.btn-primary { background: var(--accent); border-color: var(--accent); }
+.btn-primary:hover { background: #2370b8; border-color: #2370b8; }
+.bar-track { background: #e6ecf5; border-radius: 6px; height: 10px; }
+.bar-fill { background: var(--accent); height: 10px; border-radius: 6px; }
+
+/* Login page */
+.login-wrap { min-height: 100vh; display: flex; align-items: center; justify-content: center;
+  background: linear-gradient(135deg, var(--brand) 0%, var(--accent) 100%); }
+.login-card { width: 100%; max-width: 410px; border-radius: 1rem; padding: 2rem; background: #fff; box-shadow: 0 10px 30px rgba(0,0,0,.25); }
+.login-card h3 { color: var(--brand); font-weight: 700; }
+
+@media (max-width: 768px) {
+  .sidebar { position: static; width: 100%; min-height: auto; }
+  .content { margin-left: 0; padding: 1rem; }
+}

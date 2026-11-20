@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}Dashboard - EMS{% endblock %}
+{% block heading %}Dashboard{% endblock %}
+{% block content %}
+<div class="row g-3 mb-4">
+  <div class="col-md-3"><div class="card stat-card p-3"><div class="d-flex justify-content-between align-items-center">
+    <div><div class="text-muted small">Total Employees</div><h3 class="mb-0">{{ stats.total }}</h3></div><i class="bi bi-people icon"></i></div></div></div>
+  <div class="col-md-3"><div class="card stat-card p-3"><div class="d-flex justify-content-between align-items-center">
+    <div><div class="text-muted small">Departments</div><h3 class="mb-0">{{ stats.departments }}</h3></div><i class="bi bi-diagram-3 icon"></i></div></div></div>
+  <div class="col-md-3"><div class="card stat-card p-3"><div class="d-flex justify-content-between align-items-center">
+    <div><div class="text-muted small">Average Salary</div><h3 class="mb-0">{{ "{:,.0f}".format(stats.avg_salary) }}</h3></div><i class="bi bi-cash-stack icon"></i></div></div></div>
+  <div class="col-md-3"><div class="card stat-card p-3"><div class="d-flex justify-content-between align-items-center">
+    <div><div class="text-muted small">Monthly Payroll</div><h3 class="mb-0">{{ "{:,.0f}".format(stats.payroll) }}</h3></div><i class="bi bi-wallet2 icon"></i></div></div></div>
+</div>
+
+<div class="row g-3">
+  <div class="col-lg-5">
+    <div class="card p-3 h-100">
+      <h6 class="mb-3">Employees by Department</h6>
+      {% for d in by_department %}
+        <div class="mb-3">
+          <div class="d-flex justify-content-between small"><span>{{ d.department }}</span><strong>{{ d.count }}</strong></div>
+          <div class="bar-track"><div class="bar-fill" style="width: {{ (d.count / max_count * 100)|round|int }}%"></div></div>
+        </div>
+      {% else %}
+        <p class="text-muted">No data yet.</p>
+      {% endfor %}
+    </div>
+  </div>
+  <div class="col-lg-7">
+    <div class="card p-3 h-100">
+      <div class="d-flex justify-content-between mb-3"><h6 class="mb-0">Recently Joined</h6>
+        <a href="{{ url_for('main.employees') }}" class="small">View all</a></div>
+      <table class="table table-sm align-middle mb-0">
+        <thead><tr><th>ID</th><th>Name</th><th>Department</th><th>Joined</th></tr></thead>
+        <tbody>
+          {% for e in recent %}
+          <tr><td>{{ e.employee_id }}</td><td>{{ e.full_name }}</td><td>{{ e.department }}</td><td>{{ e.joining_date.strftime('%d %b %Y') }}</td></tr>
+          {% else %}
+          <tr><td colspan="4" class="text-center text-muted">No employees yet.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="mt-4">
+  <a href="{{ url_for('main.add_employee') }}" class="btn btn-primary"><i class="bi bi-person-plus"></i> Add Employee</a>
+  <a href="{{ url_for('main.employees') }}" class="btn btn-outline-secondary ms-2"><i class="bi bi-table"></i> View Employees</a>
+</div>
+{% endblock %}
